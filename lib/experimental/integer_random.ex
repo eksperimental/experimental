@@ -58,89 +58,76 @@ defmodule Experimental.IntegerRandom do
     do: do_random(upper_limit, lower_limit)
 
   @doc """
-  Returns a random integer of a certain `length`.
+  Returns a random integer of a certain `size`.
 
   It is a very efficient function for generating exceptionally large integers,
-  for example a random integer of 100,000 digits: `Integer.random_digits(100_000)`.
+  for example a random integer of 100,000 digits: `Integer.pad_random(100_000)`.
 
   Options:
-  - positive: boolean
-  - negative: boolean
-  - force_length: boolean
+  - force_size: true | false
+  - return: :integer | :positive | :negative | :zero_or_positive | :zero_or_negative
 
-  If no options are given, only positive numbers will be returned.
-  `:force_length` is set to `false` by default.
+  Defaults options are `force_size: true`, `return: :zero_or_positive.
 
   ## Examples
 
       # only positive integers
-      Integer.random_digits(20)
+      Integer.pad_random(20)
       #=> 57901764671769822086
 
       # only negatives integers
-      Integer.random_digits(20, negative: true)
+      Integer.pad_random(20, return: :negative)
       #=> -92185616901087310291
 
       # negative or positive integers
-      Integer.random_digits(20, positive: true, negative: true)
+      Integer.pad_random(20, return: :integer)
       #=> 48888679633798389284
-      Integer.random_digits(20, positive: true, negative: true)
+      Integer.pad_random(20, return: :integer)
       #=> -80504687761381076044
 
-      # force length is false (digits will range from 0 to 99999)
-      Integer.random_digits(5, force_length: false)
+      # force size is false (digits will range from 0 to 99999)
+      Integer.pad_random(5, force_size: false)
       #=> 22
 
-      # force length (digits will range from 10000 to 99999)
-      Integer.random_digits(5, force_length: true)
+      # force size (digits will range from 10000 to 99999)
+      Integer.pad_random(5, force_size: true)
       #=> 10347
 
   """
-  @spec random_digits(pos_integer, list) :: integer
-  def random_digits(length, opts \\ []) when is_integer(length) and length > 0 and is_list(opts) do
-    force_length? = Keyword.get(opts, :force_length, false)
+  @spec pad_random(pos_integer, list) :: integer
+  def pad_random(size, opts \\ []) when is_integer(size) and size > 0 and is_list(opts) do
+    force_size? = Keyword.get(opts, :force_size, false)
+    return = Keyword.get(opts, :return, :zero_or_positive)
 
-    pos = Keyword.get(opts, :positive)
-    neg = Keyword.get(opts, :negative)
-    {positive?, negative?} =
-      cond do
-        is_nil(pos) and is_nil(neg) ->
-          {true, false}
-        is_nil(neg) ->
-          {pos, false}
-        :otherwise ->
-          {pos, neg}
-      end
-
-    random =
-      if force_length? do
-        do_random_digits(length - 1, [], :rand.uniform(9))
+    first_digit =
+      if (force_size? and size > 1) or (return in [:positive, :negative]) do
+        :rand.uniform(9)
       else
-        do_random_digits(length, [], 0)
+        :rand.uniform(10) - 1
       end
 
-    cond do
-      negative? and positive? ->
+    bare_random = do_pad_random(size - 1, [], first_digit)
+
+    case return do
+      :integer ->
         case :rand.uniform(2) do
-          1 -> random
-          2 -> -(random)
+          1 -> bare_random
+          2 -> -(bare_random)
         end
 
-      positive? ->
-        random
+      x when x in [:zero_or_positive, :positive] ->
+        bare_random
 
-      negative? ->
-        -(random)
+      x when x in [:negative, :zero_or_negative] ->
+        -(bare_random)
 
       :otherwise ->
         raise ArgumentError, "at least option :positive or :negative must be set to true"
     end
   end
 
-  defp do_random_digits(0, acc, first_digit) do
-    [first_digit | acc] |> Enum.join |> String.to_integer
-  end
-
-  defp do_random_digits(length, acc, first_digit) when length > 0,
-    do: do_random_digits(length - 1, [:rand.uniform(10) - 1 | acc], first_digit)
+  defp do_pad_random(0, acc, first_digit),
+    do: [first_digit | acc] |> Enum.join |> String.to_integer
+  defp do_pad_random(size, acc, first_digit) when size > 0,
+    do: do_pad_random(size - 1, [:rand.uniform(10) - 1 | acc], first_digit)
 end
