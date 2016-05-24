@@ -121,8 +121,9 @@ defmodule Experimental.IntegerRandom do
       x when x in [:negative, :zero_or_negative] ->
         -(bare_random)
 
-      :otherwise ->
-        raise ArgumentError, "at least option :positive or :negative must be set to true"
+      _ ->
+        # raise ArgumentError, "#{__MODULE__}.pad_random/2 expects known :return value, got: #{inspect return}"
+        raise ArgumentError, "unknown :return value, got: #{inspect return}"
     end
   end
 

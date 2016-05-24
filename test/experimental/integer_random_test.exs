@@ -18,6 +18,25 @@ defmodule Experimental.IntegerRandomTest do
     assert Integer.random(99) in 0..99
   end
 
+  test "pad_random errors" do
+    assert_raise ArgumentError,
+      "unknown :return value, got: :foo",
+      fn ->
+        Experimental.IntegerRandom.pad_random(10, return: :foo)
+      end
+
+    assert_raise FunctionClauseError,
+      ~R/no function clause matching in/,
+      fn ->
+        Experimental.IntegerRandom.pad_random(0)
+      end
+
+    assert_raise FunctionClauseError,
+      ~R/no function clause matching in/,
+      fn ->
+        Experimental.IntegerRandom.pad_random(1.2)
+      end
+  end
 
   test "pad_random" do
     for _ <- 1..1000 do
