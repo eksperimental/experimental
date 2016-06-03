@@ -1,5 +1,4 @@
-defmodule Experimental.IntegerRandom do
-
+defmodule Experimental.Integer do
   @doc """
   Returns a random integer between 0 and `limit`.
 

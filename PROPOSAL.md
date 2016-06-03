@@ -14,10 +14,13 @@ So I propose to add:
 - `Integer.random(lower_limit, upper_limit)` - returns a random integer withing two limits.
 
 `Integer.pad_random` if we are about to generate huge numbers, `:erlang.random_uniform/1` will work to a certain limit.
-the function can has options such are force_length, and return negative numbers, possitive, or both, including or excluding zero.
+the function can has options such as:
+  - force_size: true | false
+  - return: :integer | :positive | :negative | :zero_or_positive | :zero_or_negative
 
 This list can generate incredible huge integers, with no permormance cost.
 
+Use cases: benchmarking functions with different integers and data size
 
 ## Range module
 
@@ -29,3 +32,7 @@ This list can generate incredible huge integers, with no permormance cost.
 
 - `Enum.random(enumerable, count)` - It returns a list of count size, of random items from enumerable.
 The main difference with `Enum.take_random/2` is that latter will not include repeated results, and if count is greater than the number of elements in the enumerable, it will return short. So `Enum.random/2` garantees the count of items, and allows them to be repeated.
+
+`Enum.random/1` has been updated to not to call `Enum.take_random/2`, but to use `Enum.at/3`.
+
+`Enum.at/3` has been updated to use `Range.at/3` 

@@ -1,9 +1,9 @@
 Code.require_file "../test_helper.exs", __DIR__
 
-defmodule Experimental.IntegerRandomTest do
+defmodule Experimental.IntegerTest do
   use ExUnit.Case, async: true
-  require Experimental.IntegerRandom, as: Integer
-  doctest Experimental.IntegerRandom
+  require Experimental.Integer, as: Integer
+  doctest Experimental.Integer
 
   test "random" do
     assert Integer.random(0) === 0
@@ -22,19 +22,19 @@ defmodule Experimental.IntegerRandomTest do
     assert_raise ArgumentError,
       "unknown :return value, got: :foo",
       fn ->
-        Experimental.IntegerRandom.pad_random(10, return: :foo)
+        Experimental.Integer.pad_random(10, return: :foo)
       end
 
     assert_raise FunctionClauseError,
       ~R/no function clause matching in/,
       fn ->
-        Experimental.IntegerRandom.pad_random(0)
+        Experimental.Integer.pad_random(0)
       end
 
     assert_raise FunctionClauseError,
       ~R/no function clause matching in/,
       fn ->
-        Experimental.IntegerRandom.pad_random(1.2)
+        Experimental.Integer.pad_random(1.2)
       end
   end
 
