@@ -34,6 +34,12 @@ The main difference with `Enum.take_random/2` is that latter will not include re
 
 ## Additional functions implemented
 
+### Range.at/3
+
+It works the same way as Enum.at/3, but given a range, it returns an integer at the given `index`.
+
+This function is used to optimize `Enum.at/3` when dealing with ranges.
+
 ### Integer.pad_random/2
 
 If we are about to generate huge numbers, `:erlang.random_uniform/1` will work to a certain limit.
