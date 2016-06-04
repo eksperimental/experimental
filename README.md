@@ -1,29 +1,16 @@
 # Experimental
 
-A library that holds proposals to be included in the [Elixir programming language](https://github.com/elixir-lang/elixir/)
+Proposals to be included in the [Elixir programming language](https://github.com/elixir-lang/elixir/)
 
-## Installation
+You can see all the proposals by [browsing the branches of this project](https://github.com/eksperimental/experimental/branches).
 
-  1. Add experimental to your list of dependencies in `mix.exs`:
+## Clone the code
 
-        def deps do
-          [
-            {
-              :experimental,
-              git: "https://github.com/eksperimental/experimental.git",
+You can clone a copy of the proposal branch by running:
 
-              # for a list of braches see https://github.com/eksperimental/experimental/branches
-              branch: "BRANCH_YOU_ARE_INTERESTING_IN_USING",
-            },
-          ]
-        end
-
-  2. Ensure experimental is started before your application:
-
-        def application do
-          [applications: [:experimental]]
-        end
-
+```sh
+git clone -b BRANCH_NAME --single-branch https://github.com/eksperimental/experimental.git
+```
 
 ## License
 
