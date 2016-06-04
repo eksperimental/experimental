@@ -1,29 +1,12 @@
-# Experimental
+# Introducing random related functions
 
-A library that holds proposals to be included in the [Elixir programming language](https://github.com/elixir-lang/elixir/)
+You may want to read the [PROPOSAL](PROPOSAL.md) to find out what this is about.
 
-## Installation
+You can clone a copy of this branch by running
 
-  1. Add experimental to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [
-            {
-              :experimental,
-              git: "https://github.com/eksperimental/experimental.git",
-
-              # for a list of braches see https://github.com/eksperimental/experimental/branches
-              branch: "BRANCH_YOU_ARE_INTERESTING_IN_USING",
-            },
-          ]
-        end
-
-  2. Ensure experimental is started before your application:
-
-        def application do
-          [applications: [:experimental]]
-        end
-
+```sh
+git clone -b random --single-branch https://github.com/eksperimental/experimental.git
+```
 
 ## License
 
